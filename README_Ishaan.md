@@ -18,6 +18,7 @@ Features:
 * MSAA: Multi Sample Anti Aliasing
 * Refraction (make has refraction between 0.1 and 1)
 * Camera Movement
+
   w-a-s-d-q-z move camera in world space
   [-]-o-p pan camera around
   up - down for moving the focal plan in and out
