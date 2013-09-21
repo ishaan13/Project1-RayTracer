@@ -20,8 +20,11 @@ Features:
 * Camera Movement
 
   w-a-s-d-q-z move camera in world space
+  
   [-]-o-p pan camera around
+  
   up - down for moving the focal plan in and out
+  
   left - right for increasing and decreasing aperture size
   
 -------------------------------------------------------------------------------
