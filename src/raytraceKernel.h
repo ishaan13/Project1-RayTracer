@@ -20,6 +20,11 @@
     #include <cutil_math.h>
 #endif
 
-void cudaRaytraceCore(uchar4* pos, camera* renderCam, int frame, int iterations, material* materials, int numberOfMaterials, geom* geoms, int numberOfGeoms);
+extern glm::vec3* accumulatorImage;
+
+void cudaAllocateAccumulatorImage(camera *renderCam);
+void cudaFreeAccumulatorImage();
+void cudaClearAccumulatorImage(camera *renderCam);
+void cudaRaytraceCore(uchar4* pos, camera* renderCam, int frame, int iterations, material* materials, int numberOfMaterials, geom* geoms, int numberOfGeoms, cameraData liveCamera);
 
 #endif

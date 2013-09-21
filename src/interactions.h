@@ -90,7 +90,17 @@ __host__ __device__ glm::vec3 calculateRandomDirectionInHemisphere(glm::vec3 nor
 //Now that you know how cosine weighted direction generation works, try implementing non-cosine (uniform) weighted random direction generation.
 //This should be much easier than if you had to implement calculateRandomDirectionInHemisphere.
 __host__ __device__ glm::vec3 getRandomDirectionInSphere(float xi1, float xi2) {
-  return glm::vec3(0,0,0);
+
+	float theta = 2.0f * PI * xi1;
+	float phi = acos(2.0f * xi2 - 1);
+
+	float radius = 1.0f;
+
+	glm::vec3 localPosition = glm::vec3( radius * sin(theta) * cos(phi), radius * sin(theta) * sin(phi), radius * cos(phi));
+
+	return localPosition;
+	// No need to normalize since radius is one
+	// return glm::normalize(localPosition);
 }
 
 //TODO (PARTIALLY OPTIONAL): IMPLEMENT THIS FUNCTION
@@ -99,7 +109,47 @@ __host__ __device__ int calculateBSDF(ray& r, glm::vec3 intersect, glm::vec3 nor
                                        AbsorptionAndScatteringProperties& currentAbsorptionAndScattering,
                                        glm::vec3& color, glm::vec3& unabsorbedColor, material m){
 
-  return 1;
+	// Reflected
+	if(fabs(m.hasReflective) > FLOAT_EPSILON)
+	{
+		ray reflected;
+		// reflected.direction = glm::reflect(r.direction,normal);
+		reflected.direction = r.direction - 2.0f * normal  * glm::dot(normal,r.direction);
+		reflected.origin = intersect + NUDGE * reflected.direction;
+		r = reflected;
+		return 1;
+	}
+	// Transmitted
+	if(fabs(m.hasRefractive) > FLOAT_EPSILON)
+	{
+		ray refracted;
+
+		// @DO: Check transmission direction
+		// @DO: Fresnel
+
+		float dotValue = glm::dot(r.direction,normal);
+		float IOR = m.indexOfRefraction;
+		if(dotValue > 0)
+		{
+			IOR = 1.0f/IOR;
+			normal = -normal;
+		}
+		float cosValue = -glm::dot(r.direction,normal);
+		float k = 1 - IOR*IOR * (1 - cosValue * cosValue);
+
+		if(k < 0)
+		{
+			refracted.direction = glm::vec3(1,1,0);
+			refracted.origin = intersect + 0.001f * refracted.direction;
+			return 0;
+		}
+		refracted.direction = r.direction * IOR + normal * (IOR * cosValue - sqrt(k));
+		refracted.origin = intersect + 0.001f * refracted.direction;
+		r = refracted;
+		return 2;
+	}
+	// Diffuse
+	return 0;
 };
 
 #endif

@@ -162,6 +162,8 @@ int scene::loadCamera(){
 	vector<glm::vec3> positions;
 	vector<glm::vec3> views;
 	vector<glm::vec3> ups;
+	vector<float> apertures;
+	vector<float> focusPlanes;
     while (!line.empty() && fp_in.good()){
 	    
 	    //check frame number
@@ -183,6 +185,12 @@ int scene::loadCamera(){
             }else if(strcmp(tokens[0].c_str(), "UP")==0){
                 ups.push_back(glm::vec3(atof(tokens[1].c_str()), atof(tokens[2].c_str()), atof(tokens[3].c_str())));
             }
+			/*else if(strcmp(tokens[0].c_str(), "APERTURE")==0){
+				apertures.push_back(atof(tokens[1].c_str()));
+			}else if(strcmp(tokens[0].c_str(), "FOCUSPLANE")==0){
+				focusPlanes.push_back(atof(tokens[1].c_str()));
+			}
+			*/
 	    }
 	    
 	    frameCount++;
@@ -198,6 +206,8 @@ int scene::loadCamera(){
 		newCamera.positions[i] = positions[i];
 		newCamera.views[i] = views[i];
 		newCamera.ups[i] = ups[i];
+//		newCamera.apertures[i] = apertures[i];
+//		newCamera.focusPlanes[i] = apertures[i];
 	}
 
 	//calculate fov based on resolution

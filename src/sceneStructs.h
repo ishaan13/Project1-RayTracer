@@ -45,6 +45,8 @@ struct cameraData {
 	glm::vec3 view;
 	glm::vec3 up;
 	glm::vec2 fov;
+	float aperture;
+	float focusPlane;
 };
 
 struct camera {
@@ -54,6 +56,8 @@ struct camera {
 	glm::vec3* ups;
 	int frames;
 	glm::vec2 fov;
+	float* apertures;
+	float* focusPlanes;
 	unsigned int iterations;
 	glm::vec3* image;
 	ray* rayList;
